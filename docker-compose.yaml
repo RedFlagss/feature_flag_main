@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: ff-service-postgres
+    environment:
+      POSTGRES_DB: ff-service
+      POSTGRES_USER: ff-service
+      POSTGRES_PASSWORD: ff-service
+      PGDATA: /var/lib/postgresql/data/pgdata
+      TZ: UTC+3
+    ports:
+      - "5432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data:rw,noexec,nosuid,size=256m
+    shm_size: "256m"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h 127.0.0.1 -p 5432"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+      start_period: 5s
+    restart: unless-stopped

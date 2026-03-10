@@ -1,0 +1,17 @@
+micronaut:
+  application:
+    name: feature-flag-service
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/ff-service
+    username: ff-service
+    password: ff-service
+    driverClassName: org.postgresql.Driver
+    dialect: POSTGRES
+
+liquibase:
+  datasources:
+    default:
+      enabled: true
+      change-log: classpath:db/changelog/db.changelog-master.yaml
