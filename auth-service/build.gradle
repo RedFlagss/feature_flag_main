@@ -11,16 +11,42 @@ repositories {
     mavenCentral()
 }
 
+//dependencies {
+//    annotationProcessor("org.projectlombok:lombok")
+//    annotationProcessor("io.micronaut:micronaut-http-validation")
+//    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+//    implementation("io.micronaut.serde:micronaut-serde-jackson")
+//    compileOnly("io.micronaut:micronaut-http-client")
+//    compileOnly("org.projectlombok:lombok")
+//    runtimeOnly("ch.qos.logback:logback-classic")
+//    testImplementation("io.micronaut:micronaut-http-client")
+//    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+//
+//    implementation("io.micronaut.liquibase:micronaut-liquibase")
+//    implementation("org.liquibase:liquibase-core")
+//    runtimeOnly("org.postgresql:postgresql")
+//}
+
 dependencies {
+    // Процессоры аннотаций (обязательно для генерации кода репозиториев)
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor") // НОВОЕ
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+
+    // Основные зависимости
+    implementation("io.micronaut.data:micronaut-data-jpa")             // НОВОЕ (подключает Hibernate)
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")           // НОВОЕ (пул соединений)
     implementation("io.micronaut.serde:micronaut-serde-jackson")
-    compileOnly("io.micronaut:micronaut-http-client")
+
+    implementation("io.micronaut.liquibase:micronaut-liquibase")
+    implementation("org.liquibase:liquibase-core")
+
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("ch.qos.logback:logback-classic")
-    testImplementation("io.micronaut:micronaut-http-client")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    runtimeOnly("org.postgresql:postgresql")
+
+    // Остальное без изменений...
 }
 
 

@@ -1,0 +1,44 @@
+#micronaut:
+#  application:
+#    name: auth-service
+#
+#datasources:
+#  default:
+#    url: jdbc:postgresql://localhost:5433/authdatabase
+#    username: user
+#    password: 1234
+#    driverClassName: org.postgresql.Driver
+#
+#liquibase:
+#  datasources:
+#    default:
+#      enabled: true
+#      change-log: 'classpath:db/changelog/db.changelog-master.yml'
+#
+#logger:
+#  levels:
+#    liquibase: DEBUG
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5433/authdatabase
+    username: user
+    password: "1234"
+    driverClassName: org.postgresql.Driver
+    db-type: postgres
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        # Важно: ставим none, чтобы Hibernate не пытался менять схему сам
+        hbm2ddl:
+          auto: none
+        show_sql: true # Полезно для отладки — будешь видеть запросы в консоли
+        format_sql: true
+
+liquibase:
+  datasources:
+    default:
+      enabled: true
+      change-log: 'classpath:db/changelog/db.changelog-master.yml'
