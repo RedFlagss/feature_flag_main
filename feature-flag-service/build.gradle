@@ -29,7 +29,9 @@ dependencies {
     annotationProcessor("io.micronaut.data:micronaut-data-processor")
     annotationProcessor("io.micronaut:micronaut-inject-java")
 
-    implementation 'org.liquibase:liquibase-core'
+    implementation("io.micronaut.liquibase:micronaut-liquibase")
+
+
 }
 
 

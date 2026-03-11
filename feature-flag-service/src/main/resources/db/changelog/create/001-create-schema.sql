@@ -1,3 +1,5 @@
+create extension if not exists ltree;
+
 create or replace function set_updated_at()
 returns trigger
 language plpgsql
@@ -8,15 +10,15 @@ return new;
 end;
 $$;
 
-create table organisation(
+create table organization(
     id bigserial primary key,
-    name string unique not null,
+    name varchar(1024) unique not null,
     created_at timestamp default now(),
     updated_at timestamp
 );
 
 create trigger organization_set_updated_at
-    before update on organisation
+    before update on organization
     for each row execute function set_updated_at();
 
 comment on table organization is 'Организация';
@@ -27,9 +29,9 @@ comment on column organization.created_at is 'Дата последнего об
 
 create table organization_node(
     id bigserial primary key,
-    name string not null,
+    name varchar(1024) not null,
     uuid uuid not null,
-    organization bigint not null references organisation(id),
+    organization bigint not null references organization(id),
     path ltree not null,
     is_service boolean not null,
     version bigint not null,
@@ -56,7 +58,7 @@ comment on column organization_node.updated_at is 'Дата последнего
 
 create table feature_flag(
     id bigserial primary key,
-    name string not null,
+    name varchar(1024) not null,
     value boolean not null,
     organization_node bigint not null references organization_node(id),
     version bigint not null ,
