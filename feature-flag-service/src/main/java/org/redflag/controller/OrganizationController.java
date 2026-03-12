@@ -123,7 +123,7 @@ public class OrganizationController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = GetOrganizationsResponse.class))
+                    content = @Content(schema = @Schema(implementation = GetOrganizationByIdResponse.class))
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -163,7 +163,7 @@ public class OrganizationController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = GetOrganizationsResponse.class))
+                    content = @Content(schema = @Schema(implementation = UpdateOrganizationResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -212,9 +212,8 @@ public class OrganizationController {
     )
     @ApiResponses({
             @ApiResponse(
-                    responseCode = "200",
-                    description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = GetOrganizationsResponse.class))
+                    responseCode = "204",
+                    description = "Успешный ответ удаления"
             ),
             @ApiResponse(
                     responseCode = "401",
