@@ -1,4 +1,4 @@
-package org.redflag.dto.organization.create;
+package org.redflag.dto.organization.update;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.core.annotation.Introspected;
@@ -9,8 +9,8 @@ import lombok.Data;
 @Data
 @Introspected
 @Serdeable
-public class CreateOrganizationRequest {
+public class UpdateOrganizationRequest {
     @JsonProperty("name")
-    @Schema(description = "Название организации", requiredMode = Schema.RequiredMode.REQUIRED, example = "ООО Хихи-хаха")
+    @Schema(description = "Новое название организации", requiredMode = Schema.RequiredMode.REQUIRED, example = "ООО Хихи-хаха")
     private final String name;
 }

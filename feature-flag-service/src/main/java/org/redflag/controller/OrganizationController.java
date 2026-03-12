@@ -1,7 +1,9 @@
 package org.redflag.controller;
 
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,7 +12,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.redflag.dto.organization.create.CreateOrganizationRequest;
 import org.redflag.dto.organization.create.CreateOrganizationResponse;
 import org.redflag.dto.ErrorDTO;
+import org.redflag.dto.organization.get.GetOrganizationByIdResponse;
 import org.redflag.dto.organization.get.GetOrganizationsResponse;
+import org.redflag.dto.organization.update.UpdateOrganizationRequest;
+import org.redflag.dto.organization.update.UpdateOrganizationResponse;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -89,16 +94,155 @@ public class OrganizationController {
                     content = @Content(schema = @Schema(implementation = ErrorDTO.class))
             ),
             @ApiResponse(
+                    responseCode = "404",
+                    description = "Не найдено",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
                     responseCode = "500",
                     description = "Неизвестная ошибка сервера",
                     content = @Content(schema = @Schema(implementation = ErrorDTO.class))
             )
 
     })
-    public GetOrganizationsResponse getOrganizations(@QueryValue("limit") Integer limit, @QueryValue("offset") Integer offset) {
+
+    public GetOrganizationsResponse getOrganizations(
+            @Parameter(description = "Верхний лимит количества записей для получения блока записей", required = true, example = "42")
+            @QueryValue("limit") Integer limit,
+            @Parameter(description = "Начальный номер записи от начала для получения блока записей", required = true, example = "0")
+            @QueryValue("offset") Integer offset) {
         return new GetOrganizationsResponse(List.of(new GetOrganizationsResponse.OrganizationDTO(1L, "Хохохо")), limit, offset, 1);
     }
-//TODO: jsonProperty
 
+    @Get("/{organizationId}")
+    @Operation(
+            summary = "Получить организацию",
+            description = "Получить конкретную организацию по id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успешный ответ",
+                    content = @Content(schema = @Schema(implementation = GetOrganizationsResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Запрос без авторизации",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Недостаточно прав для выполнения этого действия",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Не найдено",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Неизвестная ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            )
+
+    })
+    public GetOrganizationByIdResponse getOrganizationById(
+            @Parameter(description = "Идентификатор организации", required = true, example = "42")
+            @PathVariable Long organizationId
+    ) {
+        return new GetOrganizationByIdResponse(organizationId, "ООО Пупупу");
+    }
+
+    @Patch("/{organizationId}")
+    @Operation(
+            summary = "Обновить информацию об организации",
+            description = "Обновить информацию о конкретной организации"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успешный ответ",
+                    content = @Content(schema = @Schema(implementation = GetOrganizationsResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Некорректные данные запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Запрос без авторизации",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Недостаточно прав для выполнения этого действия",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Не найдено",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Конфликт данных",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Неизвестная ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            )
+
+    })
+    public UpdateOrganizationResponse updateOrganization(
+            @Parameter(description = "Идентификатор организации", required = true, example = "42")
+            @PathVariable Long organizationId,
+            @Body UpdateOrganizationRequest updateOrganizationRequest
+    ) {
+        return new UpdateOrganizationResponse(organizationId,"ООО Пупупу");
+    }
+
+    @Delete("/{organizationId}")
+    @Operation(
+            summary = "Удалить организацию",
+            description = "Удалить конкретную организации"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успешный ответ",
+                    content = @Content(schema = @Schema(implementation = GetOrganizationsResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Запрос без авторизации",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Недостаточно прав для выполнения этого действия",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Не найдено",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Неизвестная ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))
+            )
+
+    })
+    public HttpResponse<Void> deleteOrganizationById(
+            @Parameter(description = "Идентификатор организации", required = true, example = "42")
+            @PathVariable Long organizationId
+    ) {
+        return HttpResponse.noContent();
+    }
 
 }
