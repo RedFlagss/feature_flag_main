@@ -63,7 +63,7 @@ public class OrganizationController {
             )
 
     })
-    public CreateOrganizationResponse create(@Body CreateOrganizationRequest request) {
+    public CreateOrganizationResponse createOrganization(@Body CreateOrganizationRequest request) {
         return new CreateOrganizationResponse(1L, "Хехе");
     }
 
@@ -237,7 +237,7 @@ public class OrganizationController {
             )
 
     })
-    public HttpResponse<Void> deleteOrganizationById(
+    public HttpResponse<Void> deleteOrganization(
             @Parameter(description = "Идентификатор организации", required = true, example = "42")
             @PathVariable Long organizationId
     ) {
