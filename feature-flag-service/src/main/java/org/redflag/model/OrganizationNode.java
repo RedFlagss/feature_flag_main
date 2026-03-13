@@ -1,0 +1,40 @@
+package org.redflag.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+@Data
+@Entity
+@Table(name = "organization_node")
+public class OrganizationNode {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "uuid", nullable = false)
+    private UUID uuid;
+
+    @Column(name = "path", nullable = false, columnDefinition = "ltree")
+    private String path;
+
+    @Column(name = "is_service", nullable = false)
+    private Boolean isService;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+
+    @OneToMany(mappedBy = "featureFlags", cascade = CascadeType.ALL)
+    private List<FeatureFlag> featureFlags;
+}

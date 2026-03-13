@@ -31,7 +31,7 @@ create table organization_node(
     id bigserial primary key,
     name varchar(1024) not null,
     uuid uuid not null,
-    organization bigint not null references organization(id),
+    organization_id bigint not null references organization(id),
     path ltree not null,
     is_service boolean not null,
     version bigint not null,
@@ -60,7 +60,7 @@ create table feature_flag(
     id bigserial primary key,
     name varchar(1024) not null,
     value boolean not null,
-    organization_node bigint not null references organization_node(id),
+    organization_node_id bigint not null references organization_node(id),
     version bigint not null ,
     created_at timestamp default now(),
     updated_at timestamp
@@ -78,3 +78,5 @@ comment on column feature_flag.organization_node is 'Id звена органи�
 comment on column feature_flag.version is 'Версия данных для оптимистичной блокировки';
 comment on column feature_flag.created_at is 'Дата создания фича флага';
 comment on column feature_flag.updated_at is 'Дата последнего изменения фича флага';
+
+create index organization_node_gist on organization_node using gist(path);
