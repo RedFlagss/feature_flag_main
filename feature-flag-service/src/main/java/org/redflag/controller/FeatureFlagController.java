@@ -10,11 +10,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.redflag.dto.ErrorDTO;
-import org.redflag.dto.ff.create.CreateFeatureFlagRequest;
-import org.redflag.dto.ff.create.CreateFeatureFlagResponse;
-import org.redflag.dto.ff.get.*;
-import org.redflag.dto.ff.update.UpdateFeatureFlagRequest;
-import org.redflag.dto.ff.update.UpdateFeatureFlagResponse;
+import org.redflag.dto.featureflag.create.CreateFeatureFlagRequest;
+import org.redflag.dto.featureflag.create.CreateFeatureFlagResponse;
+import org.redflag.dto.featureflag.get.*;
+import org.redflag.dto.featureflag.update.UpdateFeatureFlagRequest;
+import org.redflag.dto.featureflag.update.UpdateFeatureFlagResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -131,6 +131,7 @@ public class FeatureFlagController {
                 offset,
                 1);
     }
+
     @Get("/closure")
     @Operation(
             summary = "Получить фича флаги связанных звеньев организации",
@@ -186,10 +187,10 @@ public class FeatureFlagController {
                 linkTypes,
                 List.of(new GetLinkedFeatureFlagsResponse.Item(
                         new GetLinkedFeatureFlagsResponse.Item.FeatureFlag(1L,
-                        nodeId,
-                        "meow_mode",
-                        true,
-                        1L),
+                                nodeId,
+                                "meow_mode",
+                                true,
+                                1L),
                         new GetLinkedFeatureFlagsResponse.Item.BelongsToNode(
                                 nodeId,
                                 organizationId,

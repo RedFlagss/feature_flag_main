@@ -1,4 +1,4 @@
-package org.redflag.dto.ff.get;
+package org.redflag.dto.featureflag.get;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.core.annotation.Introspected;
@@ -13,6 +13,7 @@ import java.util.UUID;
 @Introspected
 @Serdeable
 public class GetLinkedFeatureFlagsResponse {
+
     @JsonProperty("nodeId")
     @Schema(description = "Идентификатор звена организации", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     private final Long nodeId;
@@ -40,13 +41,16 @@ public class GetLinkedFeatureFlagsResponse {
     @Data
     @Introspected
     @Serdeable
-    public static class Item{
+    public static class Item {
+
         @JsonProperty("featureFlag")
         @Schema(description = "Информация о фича флаге", requiredMode = Schema.RequiredMode.REQUIRED)
         private final FeatureFlag featureFlag;
+
         @JsonProperty("belongsToNode")
         @Schema(description = "Информация о звене организации, к которой принадлежит фича флаг", requiredMode = Schema.RequiredMode.REQUIRED)
         private final BelongsToNode belongsToNode;
+
         @JsonProperty("linkType")
         @Schema(description = "Тип связи данного звена с исходным", requiredMode = Schema.RequiredMode.REQUIRED, example = "self")
         private final LinkType linkType;
@@ -55,6 +59,7 @@ public class GetLinkedFeatureFlagsResponse {
         @Introspected
         @Serdeable
         public static class BelongsToNode {
+
             @JsonProperty("id")
             @Schema(description = "Идентификатор созданной записи в БД", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
             private final Long id;
@@ -83,27 +88,32 @@ public class GetLinkedFeatureFlagsResponse {
             @Schema(description = "Версия данных для оптимистичной блокировки", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
             private final Long version;
         }
+
         @Data
         @Introspected
         @Serdeable
-        public static class FeatureFlag{
+        public static class FeatureFlag {
+
             @JsonProperty("id")
             @Schema(description = "Идентификатор фича флага", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
             private final Long id;
+
             @JsonProperty("nodeId")
             @Schema(description = "Идентификатор звена организации, к которой принадлежит фича флаг", requiredMode = Schema.RequiredMode.REQUIRED, example = "100")
             private final Long nodeId;
+
             @JsonProperty("name")
             @Schema(description = "Название фича флага", requiredMode = Schema.RequiredMode.REQUIRED, example = "friday_release_mode")
             private final String name;
+
             @JsonProperty("value")
             @Schema(description = "Значение фича флага", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
             private final Boolean value;
+
             @JsonProperty("version")
             @Schema(description = "Версия данных для оптимистичной блокировки", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
             private final Long version;
         }
     }
-
 
 }

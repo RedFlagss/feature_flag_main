@@ -1,4 +1,4 @@
-package org.redflag.dto.ff.get;
+package org.redflag.dto.featureflag.get;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -28,6 +28,7 @@ public enum LinkType {
             default -> throw new IllegalArgumentException();
         }).toList();
     }
+
     @JsonValue
     public String getValue() {
         return value;

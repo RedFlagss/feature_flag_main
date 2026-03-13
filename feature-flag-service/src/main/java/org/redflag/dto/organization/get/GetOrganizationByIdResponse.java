@@ -10,9 +10,11 @@ import lombok.Data;
 @Introspected
 @Serdeable
 public class GetOrganizationByIdResponse {
+
     @JsonProperty("id")
     @Schema(description = "Идентификатор записи в БД", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     private final Long id;
+
     @JsonProperty("name")
     @Schema(description = "Название организации", requiredMode = Schema.RequiredMode.REQUIRED, example = "ООО Хихи-хаха")
     private final String name;

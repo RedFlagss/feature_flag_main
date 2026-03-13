@@ -9,16 +9,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.redflag.dto.ErrorDTO;
 import org.redflag.dto.organization.create.CreateOrganizationRequest;
 import org.redflag.dto.organization.create.CreateOrganizationResponse;
-import org.redflag.dto.ErrorDTO;
 import org.redflag.dto.organization.get.GetOrganizationByIdResponse;
 import org.redflag.dto.organization.get.GetOrganizationsResponse;
 import org.redflag.dto.organization.update.UpdateOrganizationRequest;
 import org.redflag.dto.organization.update.UpdateOrganizationResponse;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Controller("api/v1/organizations")
@@ -202,7 +200,7 @@ public class OrganizationController {
             @PathVariable Long organizationId,
             @Body UpdateOrganizationRequest updateOrganizationRequest
     ) {
-        return new UpdateOrganizationResponse(organizationId,"ООО Пупупу");
+        return new UpdateOrganizationResponse(organizationId, "ООО Пупупу");
     }
 
     @Delete("/{organizationId}")

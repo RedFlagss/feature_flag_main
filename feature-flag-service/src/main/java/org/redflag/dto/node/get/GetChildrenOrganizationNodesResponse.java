@@ -13,9 +13,11 @@ import java.util.UUID;
 @Introspected
 @Serdeable
 public class GetChildrenOrganizationNodesResponse {
+
     @JsonProperty("nodeId")
     @Schema(description = "Идентификатор родительского звена", requiredMode = Schema.RequiredMode.REQUIRED, example = "100")
     private final Long nodeId;
+
 
     @JsonProperty("items")
     @Schema(description = "Массив дочерних звеньев", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -25,25 +27,32 @@ public class GetChildrenOrganizationNodesResponse {
     @Data
     @Introspected
     @Serdeable
-    public static class OrganizationNodeDTO{
+    public static class OrganizationNodeDTO {
+
         @JsonProperty("id")
         @Schema(description = "Идентификатор записи в БД", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
         private final Long id;
+
         @JsonProperty("organizationId")
         @Schema(description = "Идентификатор организации, к которой принадлежит звено, в БД", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
         private final Long organizationId;
+
         @JsonProperty("uuid")
         @Schema(description = "Не технический идентификатор звена организации", requiredMode = Schema.RequiredMode.REQUIRED, example = "9c2c7a6d-29e9-4c8c-a0b3-3b14f7c2b4f1")
         private final UUID uuid;
+
         @JsonProperty("path")
         @Schema(description = "Путь из идентификаторов от корня организации до текущего звена", requiredMode = Schema.RequiredMode.REQUIRED, example = "100.1")
         private final String path;
+
         @JsonProperty("name")
         @Schema(description = "Название звена организации", requiredMode = Schema.RequiredMode.REQUIRED, example = "Кредитование")
         private final String name;
+
         @JsonProperty("isService")
         @Schema(description = "Является ли данное звено организации сервисом", requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
         private final Boolean isService;
+
         @JsonProperty("version")
         @Schema(description = "Версия данных для оптимистичной блокировки", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
         private final Long version;

@@ -10,6 +10,7 @@ import lombok.Data;
 @Introspected
 @Serdeable
 public class CreateOrganizationRequest {
+
     @JsonProperty("name")
     @Schema(description = "Название организации", requiredMode = Schema.RequiredMode.REQUIRED, example = "ООО Хихи-хаха")
     private final String name;

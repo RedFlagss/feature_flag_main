@@ -18,7 +18,6 @@ import org.redflag.dto.node.update.MoveOrganizationNodeResponse;
 import org.redflag.dto.node.update.UpdateOrganizationNodeRequest;
 import org.redflag.dto.node.update.UpdateOrganizationNodeResponse;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -566,7 +565,7 @@ public class OrganizationNodeController {
                 UUID.fromString("9c2c7a6d-29e9-4c8c-a0b3-3b14f7c2b4f1"),
                 "1.100",
                 "1.3.100",
-                moveOrganizationNodeRequest.getVersion()+1,
+                moveOrganizationNodeRequest.getVersion() + 1,
                 List.of(new MoveOrganizationNodeResponse(
                         103L,
                         UUID.fromString("c3b7aef2-30d5-4dfe-9e8b-8f3c6b16a4fb"),
