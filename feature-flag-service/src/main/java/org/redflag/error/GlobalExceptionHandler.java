@@ -17,6 +17,7 @@ public class GlobalExceptionHandler implements ExceptionHandler<Throwable, HttpR
     public HttpResponse<ErrorResponse> handle(HttpRequest request, Throwable exception) {
         ErrorCatalog error = getError(exception);
 
+        exception.printStackTrace();
         if (error == ErrorCatalog.UNEXPECTED_ERROR) {
             log.error("Unexpected error. path = {}, method = {}, message = {}",
                     request.getPath(),
