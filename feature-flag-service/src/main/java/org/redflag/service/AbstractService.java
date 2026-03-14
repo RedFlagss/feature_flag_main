@@ -1,5 +1,8 @@
 package org.redflag.service;
 
+import jakarta.inject.Singleton;
+
+
 public abstract class AbstractService<Request, Response> {
     protected void validateRequest(Request request) {
 

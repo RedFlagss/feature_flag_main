@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.redflag.dto.ErrorResponse;
 import org.redflag.dto.organization.create.CreateOrganizationRequest;
 import org.redflag.dto.organization.create.CreateOrganizationResponse;
+import org.redflag.dto.organization.get.GetOrganizationByIdRequest;
 import org.redflag.dto.organization.get.GetOrganizationByIdResponse;
 import org.redflag.dto.organization.get.GetOrganizationsRequest;
 import org.redflag.dto.organization.get.GetOrganizationsResponse;
@@ -20,6 +21,7 @@ import org.redflag.dto.organization.update.UpdateOrganizationRequest;
 import org.redflag.dto.organization.update.UpdateOrganizationResponse;
 import org.redflag.repository.OrganizationRepository;
 import org.redflag.service.impl.CreateOrganizationService;
+import org.redflag.service.impl.GetOrganizationByIdService;
 import org.redflag.service.impl.GetOrganizationsService;
 
 import java.util.List;
@@ -30,6 +32,7 @@ import java.util.List;
 public class OrganizationController {
     private final CreateOrganizationService createOrganizationService;
     private final GetOrganizationsService getOrganizationsService;
+    private final GetOrganizationByIdService getOrganizationByIdService;
 
     @Post
     @Operation(
@@ -155,10 +158,11 @@ public class OrganizationController {
 
     })
     public GetOrganizationByIdResponse getOrganizationById(
-            @Parameter(description = "Идентификатор организации", required = true, example = "42")
+            @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId
     ) {
-        return new GetOrganizationByIdResponse(organizationId, "ООО Пупупу");
+        GetOrganizationByIdRequest request = new GetOrganizationByIdRequest(organizationId);
+        return getOrganizationByIdService.service(request);
     }
 
     @Patch("/{organizationId}")

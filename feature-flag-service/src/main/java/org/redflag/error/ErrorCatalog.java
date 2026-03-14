@@ -12,7 +12,7 @@ public enum ErrorCatalog {
     NOT_EMPTY("01-0001", "Поле %s не может быть пустым или null", ErrorType.CLIENT_ERROR, HttpStatus.BAD_REQUEST),
     BAD_LIMIT("01-0002", "Некорректный формат limit", ErrorType.CLIENT_ERROR, HttpStatus.BAD_REQUEST),
     BAD_OFFSET("01-0003", "Некорректный формат offset", ErrorType.CLIENT_ERROR, HttpStatus.BAD_REQUEST),
-    EMPTY_LIST("01-0004", "Нет данных по переданным параметрам", ErrorType.CLIENT_ERROR, HttpStatus.NOT_FOUND),
+    NO_DATA("01-0004", "Нет данных по переданным параметрам", ErrorType.CLIENT_ERROR, HttpStatus.NOT_FOUND),
 
     NOT_UNIQUE_ORGANIZATION_NAME("02-0001", "Организация с таким именем уже существует", ErrorType.BUSINESS_ERROR, HttpStatus.CONFLICT);
 

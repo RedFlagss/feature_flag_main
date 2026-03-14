@@ -1,7 +1,5 @@
 package org.redflag.service.impl;
 
-import io.micronaut.data.model.Pageable;
-import io.micronaut.data.runtime.http.PageableRequestArgumentBinder;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import org.redflag.dto.organization.get.GetOrganizationsRequest;
@@ -11,10 +9,8 @@ import org.redflag.model.Organization;
 import org.redflag.repository.OrganizationRepository;
 import org.redflag.service.AbstractService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Singleton
@@ -43,7 +39,7 @@ public class GetOrganizationsService extends AbstractService<GetOrganizationsReq
                 .map(this::toOrganizationDTO).toList();
 
         if (organizationDTOS.isEmpty()) {
-            throw ErrorCatalog.EMPTY_LIST.getException();
+            throw ErrorCatalog.NO_DATA.getException();
         }
 
         return new GetOrganizationsResponse(organizationDTOS,
