@@ -14,11 +14,13 @@ import org.redflag.dto.ErrorResponse;
 import org.redflag.dto.organization.create.CreateOrganizationRequest;
 import org.redflag.dto.organization.create.CreateOrganizationResponse;
 import org.redflag.dto.organization.get.GetOrganizationByIdResponse;
+import org.redflag.dto.organization.get.GetOrganizationsRequest;
 import org.redflag.dto.organization.get.GetOrganizationsResponse;
 import org.redflag.dto.organization.update.UpdateOrganizationRequest;
 import org.redflag.dto.organization.update.UpdateOrganizationResponse;
 import org.redflag.repository.OrganizationRepository;
 import org.redflag.service.impl.CreateOrganizationService;
+import org.redflag.service.impl.GetOrganizationsService;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ import java.util.List;
 @Tag(name = "Организация")
 public class OrganizationController {
     private final CreateOrganizationService createOrganizationService;
+    private final GetOrganizationsService getOrganizationsService;
 
     @Post
     @Operation(
@@ -114,7 +117,8 @@ public class OrganizationController {
             @QueryValue("limit") Integer limit,
             @Parameter(description = "Начальный номер записи от начала для получения блока записей", required = true, example = "0")
             @QueryValue("offset") Integer offset) {
-        return new GetOrganizationsResponse(List.of(new GetOrganizationsResponse.OrganizationDTO(1L, "Хохохо")), limit, offset, 1);
+        GetOrganizationsRequest request = new GetOrganizationsRequest(limit, offset);
+        return getOrganizationsService.service(request);
     }
 
     @Get("/{organizationId}")
