@@ -47,7 +47,7 @@ comment on table organization_node is 'Звено в дереве иерархи
 comment on column organization_node.id is 'Id звена организации';
 comment on column organization_node.name is 'Название звена организации';
 comment on column organization_node.uuid is 'Уникальный не технический идентификатор звена организации';
-comment on column organization_node.organization is 'Id организации, к которой принадлежит звено';
+comment on column organization_node.organization_id is 'Id организации, к которой принадлежит звено';
 comment on column organization_node.path is 'Путь до текущего звена в древовидной иерархии организации';
 comment on column organization_node.is_service is 'Является ли текущее звено сервисом';
 comment on column organization_node.version is 'Версия данных для оптимистичной блокировки';
@@ -74,7 +74,7 @@ comment on table feature_flag is 'Фича флаг';
 comment on column feature_flag.id is 'Id фича флага';
 comment on column feature_flag.name is 'Название фича флага';
 comment on column feature_flag.value is 'Значение фича флага';
-comment on column feature_flag.organization_node is 'Id звена организации, к которому принадлежит фича флаг';
+comment on column feature_flag.organization_node_id is 'Id звена организации, к которому принадлежит фича флаг';
 comment on column feature_flag.version is 'Версия данных для оптимистичной блокировки';
 comment on column feature_flag.created_at is 'Дата создания фича флага';
 comment on column feature_flag.updated_at is 'Дата последнего изменения фича флага';

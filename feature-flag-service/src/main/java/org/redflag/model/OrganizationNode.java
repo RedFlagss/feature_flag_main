@@ -35,6 +35,6 @@ public class OrganizationNode {
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
-    @OneToMany(mappedBy = "featureFlags", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "organizationNode", cascade = CascadeType.ALL)
     private List<FeatureFlag> featureFlags;
 }
