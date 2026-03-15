@@ -35,6 +35,7 @@ public class OrganizationNodeController {
     private final DeleteOrganizationNodeService deleteOrganizationNodeService;
     private final GetOrganizationNodesService getOrganizationNodesService;
     private final GetAncestorsOrganizationNodesService getAncestorsOrganizationNodesService;
+    private final GetChildrenOrganizationNodesService getChildrenOrganizationNodesService;
 
 
     @Post
@@ -325,14 +326,8 @@ public class OrganizationNodeController {
             @Parameter(description = "Идентификатор звена организации", required = true, example = "1")
             @PathVariable Long nodeId
     ) {
-        return new GetChildrenOrganizationNodesResponse(nodeId,
-                List.of(new GetChildrenOrganizationNodesResponse.OrganizationNodeDTO(2L,
-                        organizationId,
-                        UUID.fromString("9c2c7a6d-29e9-4c8c-a0b3-3b14f7c2b4f1"),
-                        "100.1",
-                        "Кредитование",
-                        false,
-                        1L)));
+        GetChildrenOrganizationNodesRequest request = new GetChildrenOrganizationNodesRequest(organizationId, nodeId);
+        return getChildrenOrganizationNodesService.service(request);
     }
 
     @Get("/{nodeId}/ancestors")
