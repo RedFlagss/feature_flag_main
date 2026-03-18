@@ -16,8 +16,10 @@ import org.redflag.dto.featureflag.create.CreateFeatureFlagResponse;
 import org.redflag.dto.featureflag.get.*;
 import org.redflag.dto.featureflag.update.UpdateFeatureFlagRequest;
 import org.redflag.dto.featureflag.update.UpdateFeatureFlagResponse;
+import org.redflag.dto.node.get.GetFeatureFlagByIdRequest;
 import org.redflag.repository.FeatureFlagRepository;
 import org.redflag.service.impl.CreateFeatureFlagService;
+import org.redflag.service.impl.GetFeatureFlagByIdService;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +29,7 @@ import java.util.UUID;
 @Tag(name = "Фича флаг")
 public class FeatureFlagController {
     private final CreateFeatureFlagService createFeatureFlagService;
+    private final GetFeatureFlagByIdService getFeatureFlagByIdService;
 
     @Post
     @Operation(
@@ -303,11 +306,8 @@ public class FeatureFlagController {
             @Parameter(description = "Идентификатор фича флага", required = true, example = "1")
             @PathVariable Long flagId
     ) {
-        return new GetFeatureFlagByIdResponse(flagId,
-                nodeId,
-                "meow_mode",
-                true,
-                1L);
+        GetFeatureFlagByIdRequest request = new GetFeatureFlagByIdRequest(organizationId, nodeId, flagId);
+        return getFeatureFlagByIdService.service(request) ;
     }
 
     @Patch("/{flagId}")
