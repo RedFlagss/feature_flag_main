@@ -25,7 +25,6 @@ public class Session {
     @Column(nullable = false)
     private LocalDateTime ttl;
 
-    // Автоматическая установка времени создания перед сохранением
     @PrePersist
     protected void onCreate() {
         if (createdAt == null) {

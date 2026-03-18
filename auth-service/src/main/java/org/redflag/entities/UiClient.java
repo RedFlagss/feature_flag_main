@@ -25,7 +25,6 @@ public class UiClient {
     @Column(name = "uuid_departament", nullable = false)
     private UUID uuidDepartament;
 
-    // Связь Many-to-Many с ролями
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_role",
