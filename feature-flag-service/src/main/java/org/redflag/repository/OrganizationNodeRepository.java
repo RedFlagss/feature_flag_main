@@ -19,12 +19,18 @@ public interface OrganizationNodeRepository extends JpaRepository<OrganizationNo
     Boolean existsDescendants(Long nodeId);
 
     Boolean existsByOrganization_IdAndName(Long organizationId, String name);
-
-    Boolean existsByOrganization_IdAndId(Long organizationId, Long nodeId);
+    @Query(value = """
+           select exists (
+           select 1
+           from organization_node o
+           where o.organization_id = :organizationId
+                      and text2ltree(cast(o.organization_id as text)) = o.path
+           )
+           """, nativeQuery = true)
+    Boolean existsRootNodeInOrganization(Long organizationId);
 
     Optional<OrganizationNode> findByOrganization_IdAndId(Long organizationId, Long id);
 
-    OrganizationNode findByName(String name);
 
     @Query(value = """
             with root as(
@@ -97,4 +103,5 @@ public interface OrganizationNodeRepository extends JpaRepository<OrganizationNo
             order by nlevel(descedants.path), descedants.path
             """, nativeQuery = true)
     List<OrganizationNode> findAllDescendantsByIdAndDepth(Long organizationId, Long nodeId, @Nullable Integer depth);
+
 }
