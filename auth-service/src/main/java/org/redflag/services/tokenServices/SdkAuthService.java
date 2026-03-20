@@ -1,32 +1,50 @@
 package org.redflag.services.tokenServices;
 
+import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.token.jwt.generator.JwtTokenGenerator;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.redflag.exception.BadCredentialsCustomException;
 import org.redflag.repositories.SdkClientRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
+@Slf4j
 @Singleton
 @RequiredArgsConstructor
 public class SdkAuthService {
+
+    private static final Integer EXPIRATION_SECONDS = 86400;
 
     private final SdkClientRepository sdkClientRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenGenerator tokenGenerator;
 
     public Optional<String> authenticate(UsernamePasswordCredentials credentials) {
-        return sdkClientRepository.findByLogin(credentials.getUsername())
+        UUID loginUuid = parseUuidOrThrow(credentials.getUsername());
+
+        return sdkClientRepository.findByLogin(loginUuid)
                 .filter(client -> passwordEncoder.matches(credentials.getPassword(), client.getPassword()))
                 .flatMap(client -> {
-                    Map<String, Object> claims = Map.of(
-                            "login", client.getLogin(),
-                            "type", "sdk_client"
+                    Authentication authentication = Authentication.build(
+                            client.getLogin().toString(),
+                            Map.of("type", "sdk_client")
                     );
-                    return tokenGenerator.generateToken(claims);
+
+                    return tokenGenerator.generateToken(authentication, EXPIRATION_SECONDS);
                 });
+    }
+
+    private UUID parseUuidOrThrow(String login) {
+        try {
+            return UUID.fromString(login);
+        } catch (IllegalArgumentException e) {
+            throw new BadCredentialsCustomException("The login must be a valid UUID (e.g., 550e8400-e29b-41d4-a716-446655440000)");
+        }
     }
 }

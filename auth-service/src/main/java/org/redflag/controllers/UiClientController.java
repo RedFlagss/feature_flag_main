@@ -1,13 +1,11 @@
 package org.redflag.controllers;
 
-import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
-import io.micronaut.http.exceptions.HttpStatusException;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.redflag.annotations.NoSdkAllowed;
@@ -24,6 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @NoSdkAllowed
+@Tag(name = "CRUD методы для сущности ui пользователь")
 public class UiClientController {
 
     private final UiClientService clientService;
@@ -40,9 +39,9 @@ public class UiClientController {
     }
 
     @Delete("/{id}")
-    @Status(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public HttpResponse<?> delete(@PathVariable Long id) {
         clientService.delete(id);
+        return HttpResponse.noContent();
     }
 
     @Patch("/me")

@@ -1,7 +1,6 @@
 package org.redflag.services.sessionServices;
 
 import io.micronaut.scheduling.annotation.Scheduled;
-import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 import lombok.AllArgsConstructor;
 import org.redflag.repositories.SessionRepository;
@@ -17,7 +16,7 @@ public class SessionCleaner {
     private final SessionRepository sessionRepository;
 
     @Scheduled(fixedDelay = CLEANUP_INTERVAL)
-    @Transactional
+//    @Transactional
     public void cleanExpiredSessions() {
         LocalDateTime now = LocalDateTime.now();
         sessionRepository.deleteByTtlBefore(now);

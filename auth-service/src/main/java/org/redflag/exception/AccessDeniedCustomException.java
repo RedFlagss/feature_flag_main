@@ -2,7 +2,7 @@ package org.redflag.exception;
 
 import io.micronaut.http.HttpStatus;
 
-// 409
+// 403
 public class AccessDeniedCustomException extends RuntimeException implements HttpStatusAware {
     public AccessDeniedCustomException(String message) {
         super(message);
@@ -10,6 +10,6 @@ public class AccessDeniedCustomException extends RuntimeException implements Htt
 
     @Override
     public HttpStatus getStatus() {
-        return HttpStatus.CONFLICT;
+        return HttpStatus.FORBIDDEN;
     }
 }

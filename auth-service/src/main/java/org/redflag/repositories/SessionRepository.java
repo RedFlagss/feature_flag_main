@@ -1,6 +1,5 @@
 package org.redflag.repositories;
 
-
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.jpa.annotation.EntityGraph;
 import io.micronaut.data.jpa.repository.JpaRepository;
@@ -12,7 +11,6 @@ import java.util.Optional;
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
 
-//    @EntityGraph(attributePaths = {"user"})
     @EntityGraph(attributePaths = {"user", "user.roles"})
     Optional<Session> findById(Long id);
 

@@ -7,6 +7,7 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.rules.SecurityRule;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.redflag.services.tokenServices.SdkAuthService;
 import reactor.core.publisher.Mono;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Controller("/api/v1/sdk")
 @RequiredArgsConstructor
+@Tag(name = "Авторизация для Sdk клиентов через jwt-токен")
 public class SdkAuthController {
 
     private final SdkAuthService sdkAuthService;

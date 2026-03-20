@@ -1,13 +1,11 @@
 package org.redflag.controllers;
 
-import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.redflag.annotations.NoSdkAllowed;
-import org.redflag.dto.RoleDto;
 import org.redflag.entities.Role;
 import org.redflag.services.RoleService;
 
@@ -17,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @NoSdkAllowed
+@Tag(name = "CRUD методы для сущности Роль")
 public class RoleController {
 
     private final RoleService roleService;

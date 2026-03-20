@@ -3,12 +3,13 @@ package org.redflag.dto;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
+import java.util.UUID;
 
 @Serdeable
 @Introspected
-public record SdkLoginUpdate(
+public record SdkLoginRequest(
+
         @NotBlank
-        @Size(min = 3, max = 50)
-        String newLogin
+        UUID newLogin
 ) {}

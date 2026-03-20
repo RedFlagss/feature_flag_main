@@ -12,6 +12,7 @@ import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.Authenticator;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.rules.SecurityRule;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.redflag.exception.BadCredentialsCustomException;
 import org.redflag.services.sessionServices.SessionService;
@@ -22,6 +23,7 @@ import java.util.Map;
 @Controller("/api/v1/auth")
 @Secured(SecurityRule.IS_ANONYMOUS)
 @RequiredArgsConstructor
+@Tag(name = "Авторизация ui пользователей через сессии")
 public class LoginController {
 
     private final SessionService sessionService;

@@ -3,6 +3,8 @@ package org.redflag.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "sdk_client")
 @Data
@@ -15,7 +17,7 @@ public class SdkClient {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String login;
+    private UUID login;
 
     @Column(nullable = false)
     private String password;

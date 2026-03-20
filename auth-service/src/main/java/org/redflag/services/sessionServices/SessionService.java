@@ -8,7 +8,7 @@ import org.redflag.configs.properties.SessionProperties;
 import org.redflag.entities.Session;
 import org.redflag.entities.UiClient;
 import org.redflag.exception.ResourceNotFoundCustomException;
-import org.redflag.exception.SessionLimitExceededCustomException;
+import org.redflag.exception.AccessDeniedCustomException;
 import org.redflag.repositories.SessionRepository;
 import org.redflag.repositories.UiClientRepository;
 import reactor.core.publisher.Mono;
@@ -53,7 +53,7 @@ public class SessionService {
     private void validateSessionLimit(Long userId) {
         long activeSessions = sessionRepository.countByUserIdAndTtlAfter(userId, LocalDateTime.now());
         if (activeSessions >= MAX_SESSIONS) {
-            throw new SessionLimitExceededCustomException("The active sessions limit has been reached (max. "
+            throw new AccessDeniedCustomException("The active sessions limit has been reached (max. "
                     + MAX_SESSIONS + ")");
         }
     }
