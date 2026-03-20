@@ -6,7 +6,7 @@ import org.redflag.entities.Role;
 import org.redflag.entities.UiClient;
 
 @Singleton
-public class MapUiClientToUserSecurityDto {
+public class UiClientToUserSecurityDtoMapper {
 
     public UserSecurityDto mapToDto(UiClient user) {
         return new UserSecurityDto(

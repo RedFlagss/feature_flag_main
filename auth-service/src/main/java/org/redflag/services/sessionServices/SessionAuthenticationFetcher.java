@@ -9,6 +9,7 @@ import org.reactivestreams.Publisher;
 import org.redflag.entities.Session;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 
 @Singleton
@@ -28,7 +29,20 @@ public class SessionAuthenticationFetcher implements AuthenticationFetcher<HttpR
         return request.getCookies().get("SESSION", String.class).map(Long::valueOf).orElse(null);
     }
 
+//    private Authentication mapToAuth(Session session) {
+//        return Authentication.build(session.getUser().getLogin(), Map.of("id", session.getUser().getId()));
+//    }
+
     private Authentication mapToAuth(Session session) {
-        return Authentication.build(session.getUser().getLogin(), Map.of("id", session.getUser().getId()));
+        // Вытаскиваем роли из пользователя, связанного с сессией
+        List<String> roles = session.getUser().getRoles().stream()
+                .map(org.redflag.entities.Role::getName)
+                .toList();
+
+        return Authentication.build(
+                session.getUser().getLogin(),
+                roles,                         // Передаем список ролей (List<String>)
+                Map.of("id", session.getUser().getId())
+        );
     }
 }

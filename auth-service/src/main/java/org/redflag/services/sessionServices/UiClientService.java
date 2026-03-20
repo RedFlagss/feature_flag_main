@@ -6,7 +6,7 @@ import org.redflag.dto.UserSecurityDto;
 import org.redflag.entities.UiClient;
 import org.redflag.exception.BadCredentialsCustomException;
 import org.redflag.repositories.UiClientRepository;
-import org.redflag.services.mappers.MapUiClientToUserSecurityDto;
+import org.redflag.services.mappers.UiClientToUserSecurityDtoMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -16,7 +16,7 @@ import reactor.core.scheduler.Schedulers;
 public class UiClientService {
     private final UiClientRepository uiClientRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MapUiClientToUserSecurityDto mapper;
+    private final UiClientToUserSecurityDtoMapper mapper;
 
     public Mono<UserSecurityDto> authenticate(String login, String password) {
         return findUser(login)

@@ -5,12 +5,14 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
+import org.redflag.annotations.NoSdkAllowed;
 
 // пока тестовый класс, не смотреть
 @Controller("/api/v1/users")
 public class AuthController {
 
     @Get("/me")
+    @NoSdkAllowed
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public String getMe(Authentication authentication) {
 

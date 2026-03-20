@@ -20,7 +20,6 @@ dependencies {
 
 //    implementation("io.micronaut.validation:micronaut-validation-http")
 
-
     implementation("io.micronaut.data:micronaut-data-jpa")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
@@ -29,9 +28,7 @@ dependencies {
 
     implementation("io.micronaut.liquibase:micronaut-liquibase")
     implementation("org.liquibase:liquibase-core")
-
-//    implementation("io.micronaut.security:micronaut-security")
-//    implementation("io.micronaut.security:micronaut-security-password-bcrypt")
+    implementation("io.micronaut:micronaut-http")
 
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-session")

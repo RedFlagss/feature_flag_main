@@ -1,0 +1,41 @@
+package org.redflag.controllers;
+
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.authentication.UsernamePasswordCredentials;
+import io.micronaut.security.rules.SecurityRule;
+import lombok.RequiredArgsConstructor;
+import org.redflag.services.tokenServices.SdkAuthService;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.Map;
+
+@Controller("/api/v1/sdk")
+@RequiredArgsConstructor
+public class SdkAuthController {
+
+    private final SdkAuthService sdkAuthService;
+
+    @Post("/login")
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    public Mono<HttpResponse<?>> login(@Body UsernamePasswordCredentials credentials) {
+        return Mono.fromCallable(() -> {
+                    var tokenOptional = sdkAuthService.authenticate(credentials);
+
+                    if (tokenOptional.isPresent()) {
+                        return HttpResponse.ok(Map.of(
+                                "access_token", tokenOptional.get(),
+                                "token_type", "Bearer"
+                        ));
+                    } else {
+                        return HttpResponse.unauthorized();
+                    }
+                })
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(response -> response);
+    }
+}

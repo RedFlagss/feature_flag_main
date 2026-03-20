@@ -12,7 +12,8 @@ import java.util.Optional;
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
 
-    @EntityGraph(attributePaths = {"user"})
+//    @EntityGraph(attributePaths = {"user"})
+    @EntityGraph(attributePaths = {"user", "user.roles"})
     Optional<Session> findById(Long id);
 
     void deleteByTtlBefore(LocalDateTime now);

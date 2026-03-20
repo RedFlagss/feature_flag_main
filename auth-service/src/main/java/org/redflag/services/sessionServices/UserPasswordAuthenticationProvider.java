@@ -24,12 +24,26 @@ public class UserPasswordAuthenticationProvider implements
     public Publisher<AuthenticationResponse> authenticate(HttpRequest<?> request,
                                                           AuthenticationRequest<String, String> authRequest) {
 
+//        return uiClientService.authenticate(authRequest.getIdentity(), authRequest.getSecret())
+//                .map(dto -> AuthenticationResponse.success(
+//                        dto.login(),
+//                        dto.roles(),
+//                        Map.of("id", dto.id())
+//                ))
+//                .onErrorResume(e -> Mono.just(AuthenticationResponse.failure(e.getMessage())));
+//    }
         return uiClientService.authenticate(authRequest.getIdentity(), authRequest.getSecret())
-                .map(dto -> AuthenticationResponse.success(
-                        dto.login(),
-                        dto.roles(),
-                        Map.of("id", dto.id())
-                ))
-                .onErrorResume(e -> Mono.just(AuthenticationResponse.failure(e.getMessage())));
+                .map(dto -> {
+                    log.debug("User {} logged in with roles: {}", dto.login(), dto.roles()); // <--- ДОБАВЬ ЭТО
+                    return AuthenticationResponse.success(
+                            dto.login(),
+                            dto.roles(),
+                            Map.of("id", dto.id())
+                    );
+                })
+                .onErrorResume(e -> {
+                    log.error("Auth failed: {}", e.getMessage());
+                    return Mono.just(AuthenticationResponse.failure(e.getMessage()));
+                });
     }
 }

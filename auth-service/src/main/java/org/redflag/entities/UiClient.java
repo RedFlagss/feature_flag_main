@@ -1,5 +1,6 @@
 package org.redflag.entities;
 
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name = "ui_client")
 @Data
+@Serdeable
 @NoArgsConstructor
 @AllArgsConstructor
 public class UiClient {
