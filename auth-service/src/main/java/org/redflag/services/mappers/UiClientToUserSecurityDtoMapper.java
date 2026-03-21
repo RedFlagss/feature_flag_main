@@ -12,6 +12,7 @@ public class UiClientToUserSecurityDtoMapper {
         return new UserSecurityDto(
                 user.getId(),
                 user.getLogin(),
+                user.getUuidDepartament(),
                 user.getRoles().stream().map(Role::getName).toList()
         );
     }

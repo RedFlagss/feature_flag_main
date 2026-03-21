@@ -13,7 +13,6 @@ import io.micronaut.security.authentication.Authenticator;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import liquibase.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.redflag.exception.BadCredentialsCustomException;
@@ -42,19 +41,9 @@ public class LoginController {
                 .map(sessionService::buildSuccessResponse);
     }
 
-//    @Post("/logout")
-//    @Secured(SecurityRule.IS_AUTHENTICATED)
-//    public HttpResponse<?> logout(HttpRequest<?> request) {
-//        request.getCookies().get(COOKIES_NAME, String.class)
-//                .ifPresent(sessionService::invalidateSession);
-//
-//        return HttpResponse.ok()
-//                .cookie(sessionService.createSessionCookie("", 0));
-//    }
     @Post("/logout")
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public HttpResponse<?> logout(HttpRequest<?> request, Authentication authentication) {
-        // Достаем имя (логин) текущего пользователя
         String userLogin = authentication.getName();
 
         request.getCookies().get(COOKIES_NAME, String.class)

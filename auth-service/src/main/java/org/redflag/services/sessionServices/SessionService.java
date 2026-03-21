@@ -2,10 +2,10 @@ package org.redflag.services.sessionServices;
 
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.cookie.Cookie;
-import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import org.redflag.configs.properties.SessionProperties;
+import org.redflag.dto.SessionResponseDto;
 import org.redflag.entities.Session;
 import org.redflag.entities.UiClient;
 import org.redflag.exception.BadCredentialsCustomException;
@@ -91,10 +91,17 @@ public class SessionService {
         sessionRepository.deleteByUserId(userId);
     }
 
-    public HttpResponse<?> buildSuccessResponse(Session session) {
+    public HttpResponse<SessionResponseDto> buildSuccessResponse(Session session) {
         final long SESSION_MAX_AGE = sessionProperties.getTtlHours() * 3600;
 
-        return HttpResponse.ok()
+        UiClient user = session.getUser();
+
+        SessionResponseDto body = SessionResponseDto.builder()
+                .login(user.getLogin())
+                .uuidDepartament(user.getUuidDepartament())
+                .build();
+
+        return HttpResponse.ok(body)
                 .cookie(createSessionCookie(session.getId(), SESSION_MAX_AGE));
     }
 

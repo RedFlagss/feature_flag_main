@@ -28,7 +28,8 @@ public class UserPasswordAuthenticationProvider implements
                 .map(dto -> AuthenticationResponse.success(
                         dto.login(),
                         dto.roles(),
-                        Map.of("id", dto.id())
+                        Map.of("id", dto.id(),
+                                "uuidDepartament", dto.uuidDepartament())
                 ))
                 .onErrorResume(e -> Mono.just(AuthenticationResponse.failure(e.getMessage())));
     }
