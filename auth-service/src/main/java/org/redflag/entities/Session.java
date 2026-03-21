@@ -1,5 +1,6 @@
 package org.redflag.entities;
 
+import io.micronaut.data.annotation.DateCreated;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -19,16 +20,11 @@ public class Session {
     @JoinColumn(name = "user_id", nullable = false)
     private UiClient user;
 
+    @DateCreated
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private LocalDateTime ttl;
 
-    @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
 }

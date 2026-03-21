@@ -27,7 +27,8 @@ public class UiClient {
     @Column(name = "uuid_departament", nullable = false)
     private UUID uuidDepartament;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany( fetch = FetchType.LAZY,
+                cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "id_user"),

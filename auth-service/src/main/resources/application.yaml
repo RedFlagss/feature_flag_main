@@ -17,6 +17,10 @@ micronaut:
     views:
       spec: swagger-ui.enabled=true,redoc.enabled=true
 
+  server:
+    cors:
+      enabled: true
+
   security:
     authentication: session
     redirect:
@@ -36,17 +40,13 @@ micronaut:
 
     endpoints:
       login:
-        enabled: false  # Отключаем встроенный обработчик
+        enabled: false
       logout:
         enabled: false
 
-    # Настройки для сессий
     session:
-#      enabled: true
       enabled: false
-      # Micronaut будет искать сессию, если нет JWT
       login-handler:
-#        enabled: true
         enabled: false
       cookie:
         enabled: true
@@ -57,18 +57,12 @@ micronaut:
         table-name: session
       cleanup-interval: 1h
       ttl-hours: 1
+      max-session: 5
 
 #    csrf:
 #      enabled: true
 #      cookie:
 #        enabled: true
-
-    # Порядок проверки: сначала смотрим JWT, потом сессию
-#    мб стоит раскоментировать
-#    interceptors:
-#      order:
-#        - token
-#        - session
 
     intercept-url-map:
       - pattern: /swagger-ui/**
@@ -78,31 +72,31 @@ micronaut:
       - pattern: /v3/api-docs/**
         access: isAnonymous()
 
-    server:
-      cors:
-        enabled: true
-        configurations:
-          web:
-            allowed-origins:
-              - ${FRONT_SERVER_URL}
-            allowed-methods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowed-headers:
-              - "*"
-            allow-credentials: true
+#    server:
+#      cors:
+#        enabled: true
+#        configurations:
+#          web:
+#            allowed-origins:
+#              - ${FRONT_SERVER_URL}
+#            allowed-methods:
+#              - GET
+#              - POST
+#              - PUT
+#              - DELETE
+#              - OPTIONS
+#            allowed-headers:
+#              - "*"
+#            allow-credentials: true
 
 
-datasources:
-  default:
-    url: jdbc:postgresql://localhost:5433/authdatabase
-    username: user
-    password: "1234"
-    driverClassName: org.postgresql.Driver
-    db-type: postgres
+#datasources:
+#  default:
+#    url: jdbc:postgresql://localhost:5433/authdatabase
+#    username: user
+#    password: "1234"
+#    driverClassName: org.postgresql.Driver
+#    db-type: postgres
 
 jpa:
   default:
@@ -112,7 +106,7 @@ jpa:
       hibernate:
         hbm2ddl:
           auto: none
-        show_sql: true
+        show_sql: false
 
 liquibase:
   datasources:
@@ -120,7 +114,7 @@ liquibase:
       enabled: true
       change-log: 'classpath:db/changelog/db.changelog-master.yml'
 
-logger:
-  levels:
-    io.micronaut.security: DEBUG
-    io.micronaut.session: DEBUG
+#logger:
+#  levels:
+#    io.micronaut.security: DEBUG
+#    io.micronaut.session: DEBUG

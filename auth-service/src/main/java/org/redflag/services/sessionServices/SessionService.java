@@ -2,11 +2,13 @@ package org.redflag.services.sessionServices;
 
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.cookie.Cookie;
+import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import org.redflag.configs.properties.SessionProperties;
 import org.redflag.entities.Session;
 import org.redflag.entities.UiClient;
+import org.redflag.exception.BadCredentialsCustomException;
 import org.redflag.exception.ResourceNotFoundCustomException;
 import org.redflag.exception.AccessDeniedCustomException;
 import org.redflag.repositories.SessionRepository;
@@ -21,7 +23,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SessionService {
 
-    private static final int MAX_SESSIONS = 5;
     public static final String COOKIE_NAME = "SESSION";
 
     private final SessionRepository sessionRepository;
@@ -52,9 +53,9 @@ public class SessionService {
 
     private void validateSessionLimit(Long userId) {
         long activeSessions = sessionRepository.countByUserIdAndTtlAfter(userId, LocalDateTime.now());
-        if (activeSessions >= MAX_SESSIONS) {
+        if (activeSessions >= sessionProperties.getMaxSession()) {
             throw new AccessDeniedCustomException("The active sessions limit has been reached (max. "
-                    + MAX_SESSIONS + ")");
+                    + sessionProperties.getMaxSession() + ")");
         }
     }
 
@@ -65,21 +66,35 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
-    public void invalidateSession(String sessionIdStr) {
+    public void invalidateSession(String sessionIdStr, String currentUserLogin) {
+        long sessionId;
         try {
-            Long sessionId = Long.valueOf(sessionIdStr);
-            sessionRepository.deleteById(sessionId);
-        } catch (NumberFormatException ignored) {}
+            sessionId = Long.parseLong(sessionIdStr);
+        } catch (NumberFormatException e) {
+            throw new BadCredentialsCustomException("Invalid session format");
+        }
+
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new ResourceNotFoundCustomException("Session not found"));
+
+        if (!session.getUser().getLogin().equals(currentUserLogin)) {
+            throw new AccessDeniedCustomException("You cannot invalidate someone else's session");
+        }
+
+        sessionRepository.delete(session);
     }
 
     public void invalidateAllUserSessions(Long userId) {
+        if (userId == null) {
+            throw new BadCredentialsCustomException("User ID cannot be null");
+        }
         sessionRepository.deleteByUserId(userId);
     }
 
     public HttpResponse<?> buildSuccessResponse(Session session) {
         final long SESSION_MAX_AGE = sessionProperties.getTtlHours() * 3600;
 
-        return HttpResponse.ok(Map.of("status", "success"))
+        return HttpResponse.ok()
                 .cookie(createSessionCookie(session.getId(), SESSION_MAX_AGE));
     }
 

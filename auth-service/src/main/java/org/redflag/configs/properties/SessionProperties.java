@@ -7,7 +7,9 @@ import lombok.Data;
 @Data
 public class SessionProperties {
 
-
     private Long ttlHours;
+
+    private Long maxSession;
+
 
 }
