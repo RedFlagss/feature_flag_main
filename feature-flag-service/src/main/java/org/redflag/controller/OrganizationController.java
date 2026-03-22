@@ -11,15 +11,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.redflag.dto.ErrorResponse;
+import org.redflag.dto.PaginationDTO;
+import org.redflag.dto.organization.OrganizationIdDTO;
 import org.redflag.dto.organization.create.CreateOrganizationRequest;
-import org.redflag.dto.organization.create.CreateOrganizationResponse;
-import org.redflag.dto.organization.delete.DeleteOrganizationRequest;
-import org.redflag.dto.organization.get.GetOrganizationByIdRequest;
-import org.redflag.dto.organization.get.GetOrganizationByIdResponse;
-import org.redflag.dto.organization.get.GetOrganizationsRequest;
 import org.redflag.dto.organization.get.GetOrganizationsResponse;
+import org.redflag.dto.organization.OrganizationDTO;
 import org.redflag.dto.organization.update.UpdateOrganizationRequest;
-import org.redflag.dto.organization.update.UpdateOrganizationResponse;
 import org.redflag.service.impl.*;
 
 @Controller("api/v1/organizations")
@@ -41,7 +38,7 @@ public class OrganizationController {
             @ApiResponse(
                     responseCode = "201",
                     description = "Успешный ответ создания",
-                    content = @Content(schema = @Schema(implementation = CreateOrganizationResponse.class))
+                    content = @Content(schema = @Schema(implementation = OrganizationDTO.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -70,7 +67,7 @@ public class OrganizationController {
             )
 
     })
-    public HttpResponse<CreateOrganizationResponse> createOrganization(@Body CreateOrganizationRequest request) {
+    public HttpResponse<OrganizationDTO> createOrganization(@Body CreateOrganizationRequest request) {
         return HttpResponse.created(createOrganizationService.service(request));
     }
 
@@ -114,11 +111,11 @@ public class OrganizationController {
     })
 
     public GetOrganizationsResponse getOrganizations(
-            @Parameter(description = "Верхний лимит количества записей для получения блока записей", required = true, example = "42")
+            @Parameter(description = "Верхний лимит количества записей для получения блока записей (от 1 до 100)", required = true, example = "42")
             @QueryValue("limit") Integer limit,
             @Parameter(description = "Начальный номер записи от начала для получения блока записей", required = true, example = "0")
             @QueryValue("offset") Integer offset) {
-        GetOrganizationsRequest request = new GetOrganizationsRequest(limit, offset);
+        PaginationDTO request =  new PaginationDTO(limit, offset);
         return getOrganizationsService.service(request);
     }
 
@@ -131,7 +128,7 @@ public class OrganizationController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = GetOrganizationByIdResponse.class))
+                    content = @Content(schema = @Schema(implementation = OrganizationDTO.class))
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -155,11 +152,11 @@ public class OrganizationController {
             )
 
     })
-    public GetOrganizationByIdResponse getOrganizationById(
+    public OrganizationDTO getOrganizationById(
             @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId
     ) {
-        GetOrganizationByIdRequest request = new GetOrganizationByIdRequest(organizationId);
+        OrganizationIdDTO request = new OrganizationIdDTO(organizationId);
         return getOrganizationByIdService.service(request);
     }
 
@@ -172,7 +169,7 @@ public class OrganizationController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = UpdateOrganizationResponse.class))
+                    content = @Content(schema = @Schema(implementation = OrganizationDTO.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -206,7 +203,7 @@ public class OrganizationController {
             )
 
     })
-    public UpdateOrganizationResponse updateOrganization(
+    public OrganizationDTO updateOrganization(
             @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId,
             @Body UpdateOrganizationRequest updateOrganizationRequest
@@ -251,7 +248,7 @@ public class OrganizationController {
             @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId
     ) {
-        DeleteOrganizationRequest request = new DeleteOrganizationRequest(organizationId);
+        OrganizationIdDTO request = new OrganizationIdDTO(organizationId);
         deleteOrganizationService.service(request);
         return HttpResponse.noContent();
     }

@@ -3,7 +3,7 @@ package org.redflag.service.impl;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import org.redflag.dto.organization.update.UpdateOrganizationRequest;
-import org.redflag.dto.organization.update.UpdateOrganizationResponse;
+import org.redflag.dto.organization.OrganizationDTO;
 import org.redflag.error.ErrorCatalog;
 import org.redflag.model.Organization;
 import org.redflag.repository.OrganizationRepository;
@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Singleton
 @RequiredArgsConstructor
-public class UpdateOrganizationService extends BaseService<UpdateOrganizationRequest, UpdateOrganizationResponse> {
+public class UpdateOrganizationService extends BaseService<UpdateOrganizationRequest, OrganizationDTO> {
     private final OrganizationRepository organizationRepository;
 
     @Override
@@ -37,9 +37,11 @@ public class UpdateOrganizationService extends BaseService<UpdateOrganizationReq
     }
 
     @Override
-    protected UpdateOrganizationResponse execute(UpdateOrganizationRequest request) {
-        Organization organization = new Organization().setId(request.getId()).setName(request.getName());
+    protected OrganizationDTO execute(UpdateOrganizationRequest request) {
+        Organization organization = organizationRepository.findById(request.getId())
+                .orElseThrow(ErrorCatalog.NO_DATA::getException);
+        organization.setName(request.getName());
         Organization newOrganization = organizationRepository.update(organization);
-        return new UpdateOrganizationResponse(newOrganization.getId(), newOrganization.getName());
+        return new OrganizationDTO(newOrganization.getId(), newOrganization.getName());
     }
 }

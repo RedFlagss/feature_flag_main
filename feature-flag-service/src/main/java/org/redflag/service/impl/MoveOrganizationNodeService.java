@@ -54,11 +54,12 @@ public class MoveOrganizationNodeService extends BaseService<MoveOrganizationNod
         List<OrganizationNode> subtree = organizationNodeRepository
                 .findSubtreeByOrganizationIdAndParentId(request.getOrganizationId(), request.getNodeId());
         OrganizationNode parentNode = organizationNodeRepository.findByOrganization_IdAndId(request.getOrganizationId(),
-                request.getNewParentId()).get();
+                request.getNewParentId())
+                .orElseThrow(ErrorCatalog.NO_DATA::getException);
         OrganizationNode rootNode = subtree.stream()
                 .filter((node) -> node.getId().equals(request.getNodeId()))
                 .findAny()
-                .get();
+                .orElseThrow(ErrorCatalog.NO_DATA::getException);
         rewritePath(subtree, rootNode.getPath(), parentNode.getPath());
         organizationNodeRepository.updateAll(subtree);
         return null;

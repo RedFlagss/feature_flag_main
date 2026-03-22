@@ -1,4 +1,4 @@
-package org.redflag.dto.organization.get;
+package org.redflag.dto.organization;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.core.annotation.Introspected;
@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Introspected
 @Serdeable
-public class GetOrganizationByIdResponse {
+public final class OrganizationDTO {
 
     @JsonProperty("id")
     @Schema(description = "Идентификатор записи в БД", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")

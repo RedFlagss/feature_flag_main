@@ -2,26 +2,22 @@ package org.redflag.service.impl;
 
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import org.redflag.dto.organization.delete.DeleteOrganizationRequest;
+import org.redflag.dto.organization.OrganizationIdDTO;
 import org.redflag.error.ErrorCatalog;
 import org.redflag.model.Organization;
 import org.redflag.repository.OrganizationRepository;
 import org.redflag.service.BaseService;
 
-import java.util.Optional;
-
 @Singleton
 @RequiredArgsConstructor
-public class DeleteOrganizationService extends BaseService<DeleteOrganizationRequest, Void> {
+public class DeleteOrganizationService extends BaseService<OrganizationIdDTO, Void> {
     private final OrganizationRepository organizationRepository;
 
     @Override
-    protected Void execute(DeleteOrganizationRequest request) {
-        Optional<Organization> organizationOpt = organizationRepository.findById(request.organizationId());
-        if (organizationOpt.isEmpty()) {
-            throw ErrorCatalog.NO_DATA.getException();
-        }
-        Organization organization = organizationOpt.get();
+    protected Void execute(OrganizationIdDTO request) {
+
+        Organization organization = organizationRepository.findById(request.getOrganizationId())
+                .orElseThrow(ErrorCatalog.NO_DATA::getException);
         organizationRepository.delete(organization);
         return null;
     }

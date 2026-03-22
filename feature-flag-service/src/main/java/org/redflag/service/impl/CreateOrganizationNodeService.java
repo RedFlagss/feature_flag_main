@@ -56,11 +56,8 @@ public class CreateOrganizationNodeService extends BaseService<CreateOrganizatio
 
     @Override
     protected CreateOrganizationNodeResponse execute(CreateOrganizationNodeRequest request) {
-        Optional<Organization> organizationOpt = organizationRepository.findById(request.getOrganizationId());
-        if (organizationOpt.isEmpty()) {
-            throw ErrorCatalog.NO_DATA.getException();
-        }
-        Organization organization = organizationOpt.get();
+        Organization organization = organizationRepository.findById(request.getOrganizationId())
+                .orElseThrow(ErrorCatalog.NO_DATA::getException);
         OrganizationNode organizationNode = new OrganizationNode()
                 .setName(request.getName())
                 .setUuid(UUID.randomUUID())

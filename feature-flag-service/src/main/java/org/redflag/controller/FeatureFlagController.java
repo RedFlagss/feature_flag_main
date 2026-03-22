@@ -176,7 +176,7 @@ public class FeatureFlagController {
             @PathVariable Long nodeId,
             @Parameter(description = "Тип отношения", required = true, example = "self")
             @QueryValue("relation") RelationType relation,
-            @Parameter(description = "Верхний лимит количества записей для получения блока записей", required = true, example = "42")
+            @Parameter(description = "Верхний лимит количества записей для получения блока записей (от 1 до 100)", required = true, example = "42")
             @QueryValue("limit") Integer limit,
             @Parameter(description = "Начальный номер записи от начала для получения блока записей", required = true, example = "0")
             @QueryValue("offset") Integer offset) {

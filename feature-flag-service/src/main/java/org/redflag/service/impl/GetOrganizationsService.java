@@ -2,8 +2,9 @@ package org.redflag.service.impl;
 
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import org.redflag.dto.organization.get.GetOrganizationsRequest;
+import org.redflag.dto.PaginationDTO;
 import org.redflag.dto.organization.get.GetOrganizationsResponse;
+import org.redflag.dto.organization.OrganizationDTO;
 import org.redflag.error.ErrorCatalog;
 import org.redflag.model.Organization;
 import org.redflag.repository.OrganizationRepository;
@@ -14,39 +15,41 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Singleton
-public class GetOrganizationsService extends BaseService<GetOrganizationsRequest, GetOrganizationsResponse> {
+public class GetOrganizationsService extends BaseService<PaginationDTO, GetOrganizationsResponse> {
     private final OrganizationRepository organizationRepository;
 
     @Override
-    protected void validateRequest(GetOrganizationsRequest request) {
-        if (!PaginationParameterValidator.validateLimit(request.limit())) {
+    protected void validateRequest(PaginationDTO request) {
+        if (!PaginationParameterValidator.validateLimit(request.getLimit())) {
             throw ErrorCatalog.BAD_LIMIT.getException();
         }
-        if (!PaginationParameterValidator.validateOffset(request.offset())) {
+        if (!PaginationParameterValidator.validateOffset(request.getOffset())) {
             throw ErrorCatalog.BAD_OFFSET.getException();
         }
     }
 
     @Override
-    protected GetOrganizationsResponse execute(GetOrganizationsRequest getOrganizationsRequest) {
+    protected GetOrganizationsResponse execute(PaginationDTO getOrganizationsRequest) {
         List<Organization> organizations = organizationRepository
-                .findAll(getOrganizationsRequest.limit(), getOrganizationsRequest.offset());
+                .findAll(getOrganizationsRequest.getLimit(), getOrganizationsRequest.getOffset());
 
-        List<GetOrganizationsResponse.OrganizationDTO> organizationDTOS = organizations.stream()
+        List<OrganizationDTO> organizationDTOS = organizations.stream()
                 .map(this::toOrganizationDTO).toList();
 
         if (organizationDTOS.isEmpty()) {
             throw ErrorCatalog.NO_DATA.getException();
         }
 
-        return new GetOrganizationsResponse(organizationDTOS,
-                getOrganizationsRequest.limit(),
-                getOrganizationsRequest.offset(),
-                organizations.size());
+        return GetOrganizationsResponse.builder()
+                .items(organizationDTOS)
+                .limit(getOrganizationsRequest.getLimit())
+                .offset(getOrganizationsRequest.getOffset())
+                .total(organizationDTOS.size())
+                .build();
     }
 
-    private GetOrganizationsResponse.OrganizationDTO toOrganizationDTO(Organization organization) {
-        return new GetOrganizationsResponse.OrganizationDTO(organization.getId(),
+    private OrganizationDTO toOrganizationDTO(Organization organization) {
+        return new OrganizationDTO(organization.getId(),
                 organization.getName());
     }
 }

@@ -18,12 +18,8 @@ public class GetOrganizationNodeByIdService extends BaseService<GetOrganizationN
 
     @Override
     protected GetOrganizationNodeByIdResponse execute(GetOrganizationNodeByIdRequest request) {
-        Optional<OrganizationNode> organizationNodeOpt =
-                organizationNodeRepository.findByOrganization_IdAndId(request.organizationId(), request.nodeId());
-        if (organizationNodeOpt.isEmpty()) {
-            throw ErrorCatalog.NO_DATA.getException();
-        }
-        OrganizationNode organizationNode = organizationNodeOpt.get();
+        OrganizationNode organizationNode = organizationNodeRepository.findByOrganization_IdAndId(request.organizationId(), request.nodeId())
+                .orElseThrow(ErrorCatalog.NO_DATA::getException);
         return new GetOrganizationNodeByIdResponse(organizationNode.getId(),
                 organizationNode.getOrganization().getId(),
                 organizationNode.getUuid(),

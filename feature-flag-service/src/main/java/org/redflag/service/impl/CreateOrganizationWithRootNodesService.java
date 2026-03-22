@@ -6,8 +6,8 @@ import org.redflag.dto.complex.CreateOrganizationWithRootNodeRequest;
 import org.redflag.dto.complex.CreateOrganizationWithRootNodeResponse;
 import org.redflag.dto.node.create.CreateOrganizationNodeRequest;
 import org.redflag.dto.node.create.CreateOrganizationNodeResponse;
+import org.redflag.dto.organization.OrganizationDTO;
 import org.redflag.dto.organization.create.CreateOrganizationRequest;
-import org.redflag.dto.organization.create.CreateOrganizationResponse;
 import org.redflag.service.BaseService;
 
 @RequiredArgsConstructor
@@ -18,16 +18,16 @@ public class CreateOrganizationWithRootNodesService extends BaseService<CreateOr
 
     @Override
     protected CreateOrganizationWithRootNodeResponse execute(CreateOrganizationWithRootNodeRequest request) {
-        CreateOrganizationResponse createOrganizationResponse = createOrganizationService
+        OrganizationDTO organizationDTO = createOrganizationService
                 .service(new CreateOrganizationRequest(request.getName()));
         CreateOrganizationNodeRequest createOrganizationNodeRequest = new CreateOrganizationNodeRequest(request.getName(),
                 false,
                 null);
-        createOrganizationNodeRequest.setOrganizationId(createOrganizationResponse.getId());
+        createOrganizationNodeRequest.setOrganizationId(organizationDTO.getId());
         CreateOrganizationNodeResponse createNodeResponse = createOrganizationNodeService
                 .service(createOrganizationNodeRequest);
-        return new CreateOrganizationWithRootNodeResponse(createOrganizationResponse.getId(),
-                createOrganizationResponse.getName(),
+        return new CreateOrganizationWithRootNodeResponse(organizationDTO.getId(),
+                organizationDTO.getName(),
                 new CreateOrganizationWithRootNodeResponse.OrganizationNodeDTO(
                         createNodeResponse.getId(),
                         createNodeResponse.getOrganizationId(),
