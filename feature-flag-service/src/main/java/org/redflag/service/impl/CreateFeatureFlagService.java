@@ -2,8 +2,8 @@ package org.redflag.service.impl;
 
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import org.redflag.dto.featureflag.FeatureFlagDTO;
 import org.redflag.dto.featureflag.create.CreateFeatureFlagRequest;
-import org.redflag.dto.featureflag.create.CreateFeatureFlagResponse;
 import org.redflag.error.ErrorCatalog;
 import org.redflag.model.FeatureFlag;
 import org.redflag.model.OrganizationNode;
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Singleton
 @RequiredArgsConstructor
-public class CreateFeatureFlagService extends BaseService<CreateFeatureFlagRequest, CreateFeatureFlagResponse> {
+public class CreateFeatureFlagService extends BaseService<CreateFeatureFlagRequest, FeatureFlagDTO> {
     private final FeatureFlagRepository featureFlagRepository;
     private final OrganizationNodeRepository organizationNodeRepository;
 
@@ -39,7 +39,7 @@ public class CreateFeatureFlagService extends BaseService<CreateFeatureFlagReque
     }
 
     @Override
-    protected CreateFeatureFlagResponse execute(CreateFeatureFlagRequest request) {
+    protected FeatureFlagDTO execute(CreateFeatureFlagRequest request) {
         OrganizationNode organizationNode = organizationNodeRepository.findById(request.getNodeId())
                 .orElseThrow(ErrorCatalog.NO_DATA::getException);
         FeatureFlag featureFlag = new FeatureFlag()
@@ -47,10 +47,12 @@ public class CreateFeatureFlagService extends BaseService<CreateFeatureFlagReque
                 .setValue(request.getValue())
                 .setOrganizationNode(organizationNode);
         featureFlagRepository.save(featureFlag);
-        return new CreateFeatureFlagResponse(featureFlag.getId(),
-                featureFlag.getOrganizationNode().getId(),
-                featureFlag.getName(),
-                featureFlag.getValue(),
-                featureFlag.getVersion());
+        return FeatureFlagDTO.builder()
+                .id(featureFlag.getId())
+                .nodeId(featureFlag.getOrganizationNode().getId())
+                .name(featureFlag.getName())
+                .value(featureFlag.getValue())
+                .version(featureFlag.getVersion())
+                .build();
     }
 }

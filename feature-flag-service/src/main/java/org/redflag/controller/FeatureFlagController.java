@@ -11,12 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.redflag.dto.ErrorResponse;
+import org.redflag.dto.featureflag.FeatureFlagDTO;
+import org.redflag.dto.featureflag.FeatureFlagIdDTO;
 import org.redflag.dto.featureflag.create.CreateFeatureFlagRequest;
-import org.redflag.dto.featureflag.create.CreateFeatureFlagResponse;
-import org.redflag.dto.featureflag.delete.DeleteFeatureFlagRequest;
 import org.redflag.dto.featureflag.get.*;
 import org.redflag.dto.featureflag.update.UpdateFeatureFlagRequest;
-import org.redflag.dto.featureflag.update.UpdateFeatureFlagResponse;
 import org.redflag.service.impl.*;
 
 @RequiredArgsConstructor
@@ -40,7 +39,7 @@ public class FeatureFlagController {
             @ApiResponse(
                     responseCode = "201",
                     description = "Успешный ответ создания",
-                    content = @Content(schema = @Schema(implementation = CreateFeatureFlagResponse.class))
+                    content = @Content(schema = @Schema(implementation = FeatureFlagDTO.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -74,7 +73,7 @@ public class FeatureFlagController {
             )
 
     })
-    public HttpResponse<CreateFeatureFlagResponse> createOrganizationNode(
+    public HttpResponse<FeatureFlagDTO> createOrganizationNode(
             @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId,
             @Parameter(description = "Идентификатор звена организации", required = true, example = "1")
@@ -127,7 +126,12 @@ public class FeatureFlagController {
             @QueryValue("limit") Integer limit,
             @Parameter(description = "Начальный номер записи от начала для получения блока записей", required = true, example = "0")
             @QueryValue("offset") Integer offset) {
-        GetFeatureFlagsRequest request = new GetFeatureFlagsRequest(organizationId, nodeId, limit, offset);
+        GetFeatureFlagsRequest request = GetFeatureFlagsRequest.builder()
+                .organizationId(organizationId)
+                .nodeId(nodeId)
+                .limit(limit)
+                .offset(offset)
+                .build();
         return getFeatureFlagsService.service(request);
     }
 
@@ -182,7 +186,13 @@ public class FeatureFlagController {
             @QueryValue("offset") Integer offset) {
 
 
-        GetLinkedFeatureFlagsRequest request = new GetLinkedFeatureFlagsRequest(organizationId, nodeId, relation, limit, offset);
+        GetLinkedFeatureFlagsRequest request = GetLinkedFeatureFlagsRequest.builder()
+                .organizationId(organizationId)
+                .nodeId(nodeId)
+                .relation(relation)
+                .limit(limit)
+                .offset(offset)
+                .build();
         return getLinkedFeatureFlagsService.service(request);
     }
 
@@ -195,7 +205,7 @@ public class FeatureFlagController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = GetFeatureFlagByNameResponse.class))
+                    content = @Content(schema = @Schema(implementation = FeatureFlagDTO.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -224,7 +234,7 @@ public class FeatureFlagController {
             )
 
     })
-    public GetFeatureFlagByNameResponse getFeatureFlagByName(
+    public FeatureFlagDTO getFeatureFlagByName(
             @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId,
             @Parameter(description = "Идентификатор звена организации", required = true, example = "1")
@@ -232,7 +242,11 @@ public class FeatureFlagController {
             @Parameter(description = "Название фича флага", required = true, example = "meow_mode")
             @QueryValue String flagName
     ) {
-        GetFeatureFlagByNameRequest request = new GetFeatureFlagByNameRequest(organizationId, nodeId, flagName);
+        GetFeatureFlagByNameRequest request = GetFeatureFlagByNameRequest.builder()
+                .organizationId(organizationId)
+                .nodeId(nodeId)
+                .flagName(flagName)
+                .build();
         return getFeatureFlagByNameService.service(request);
     }
 
@@ -245,7 +259,7 @@ public class FeatureFlagController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = GetFeatureFlagByIdResponse.class))
+                    content = @Content(schema = @Schema(implementation = FeatureFlagDTO.class))
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -269,7 +283,7 @@ public class FeatureFlagController {
             )
 
     })
-    public GetFeatureFlagByIdResponse getFeatureFlagById(
+    public FeatureFlagDTO getFeatureFlagById(
             @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId,
             @Parameter(description = "Идентификатор звена организации", required = true, example = "1")
@@ -277,7 +291,7 @@ public class FeatureFlagController {
             @Parameter(description = "Идентификатор фича флага", required = true, example = "1")
             @PathVariable Long flagId
     ) {
-        GetFeatureFlagByIdRequest request = new GetFeatureFlagByIdRequest(organizationId, nodeId, flagId);
+        FeatureFlagIdDTO request = new FeatureFlagIdDTO(organizationId, nodeId, flagId);
         return getFeatureFlagByIdService.service(request);
     }
 
@@ -290,7 +304,7 @@ public class FeatureFlagController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный ответ",
-                    content = @Content(schema = @Schema(implementation = UpdateFeatureFlagResponse.class))
+                    content = @Content(schema = @Schema(implementation = FeatureFlagDTO.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -324,7 +338,7 @@ public class FeatureFlagController {
             )
 
     })
-    public UpdateFeatureFlagResponse updateFeatureFlag(
+    public FeatureFlagDTO updateFeatureFlag(
             @Parameter(description = "Идентификатор организации", required = true, example = "1")
             @PathVariable Long organizationId,
             @Parameter(description = "Идентификатор звена организации", required = true, example = "1")
@@ -379,7 +393,7 @@ public class FeatureFlagController {
             @Parameter(description = "Идентификатор фича флага", required = true, example = "1")
             @PathVariable Long flagId
     ) {
-        DeleteFeatureFlagRequest request = new DeleteFeatureFlagRequest(organizationId, nodeId, flagId);
+        FeatureFlagIdDTO request = new FeatureFlagIdDTO(organizationId, nodeId, flagId);
         deleteFeatureFlagService.service(request);
         return HttpResponse.noContent();
     }

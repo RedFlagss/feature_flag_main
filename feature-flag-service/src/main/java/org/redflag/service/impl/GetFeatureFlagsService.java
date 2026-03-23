@@ -2,6 +2,7 @@ package org.redflag.service.impl;
 
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import org.redflag.dto.featureflag.FeatureFlagDTO;
 import org.redflag.dto.featureflag.get.GetFeatureFlagsRequest;
 import org.redflag.dto.featureflag.get.GetFeatureFlagsResponse;
 import org.redflag.error.ErrorCatalog;
@@ -19,10 +20,10 @@ public class GetFeatureFlagsService extends BaseService<GetFeatureFlagsRequest, 
 
     @Override
     protected void validateRequest(GetFeatureFlagsRequest request) {
-        if (!PaginationParameterValidator.validateLimit(request.limit())) {
+        if (!PaginationParameterValidator.validateLimit(request.getLimit())) {
             throw ErrorCatalog.BAD_LIMIT.getException();
         }
-        if (!PaginationParameterValidator.validateOffset(request.offset())) {
+        if (!PaginationParameterValidator.validateOffset(request.getOffset())) {
             throw ErrorCatalog.BAD_OFFSET.getException();
         }
     }
@@ -30,24 +31,28 @@ public class GetFeatureFlagsService extends BaseService<GetFeatureFlagsRequest, 
     @Override
     protected GetFeatureFlagsResponse execute(GetFeatureFlagsRequest request) {
         List<FeatureFlag> featureFlags = featureFlagRepository
-                .findByOrganizationNodeId(request.nodeId(), request.limit(), request.offset());
+                .findByOrganizationNodeId(request.getNodeId(), request.getLimit(), request.getOffset());
         if (featureFlags.isEmpty()) {
             throw ErrorCatalog.NO_DATA.getException();
         }
 
-        return new GetFeatureFlagsResponse(request.nodeId(),
-                featureFlags.stream().map(this::toFeatureFlag).toList(),
-                request.limit(),
-                request.offset(),
-                featureFlags.size());
+        return GetFeatureFlagsResponse.builder()
+                .nodeId(request.getNodeId())
+                .items(featureFlags.stream().map(this::toFeatureFlag).toList())
+                .limit(request.getLimit())
+                .offset(request.getOffset())
+                .total(featureFlags.size())
+                .build();
     }
 
-    private GetFeatureFlagsResponse.FeatureFlag toFeatureFlag(FeatureFlag featureFlag) {
-        return new GetFeatureFlagsResponse.FeatureFlag(featureFlag.getId(),
-                featureFlag.getOrganizationNode().getId(),
-                featureFlag.getName(),
-                featureFlag.getValue(),
-                featureFlag.getVersion());
+    private FeatureFlagDTO toFeatureFlag(FeatureFlag featureFlag) {
+        return FeatureFlagDTO.builder()
+                .id(featureFlag.getId())
+                .nodeId(featureFlag.getOrganizationNode().getId())
+                .name(featureFlag.getName())
+                .value(featureFlag.getValue())
+                .version(featureFlag.getVersion())
+                .build();
     }
 
 

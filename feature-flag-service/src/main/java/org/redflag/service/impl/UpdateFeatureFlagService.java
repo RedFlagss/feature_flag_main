@@ -3,8 +3,8 @@ package org.redflag.service.impl;
 import jakarta.inject.Singleton;
 import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
+import org.redflag.dto.featureflag.FeatureFlagDTO;
 import org.redflag.dto.featureflag.update.UpdateFeatureFlagRequest;
-import org.redflag.dto.featureflag.update.UpdateFeatureFlagResponse;
 import org.redflag.error.ErrorCatalog;
 import org.redflag.model.FeatureFlag;
 import org.redflag.repository.FeatureFlagRepository;
@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Singleton
 @RequiredArgsConstructor
-public class UpdateFeatureFlagService extends BaseService<UpdateFeatureFlagRequest, UpdateFeatureFlagResponse> {
+public class UpdateFeatureFlagService extends BaseService<UpdateFeatureFlagRequest, FeatureFlagDTO> {
     private final FeatureFlagRepository featureFlagRepository;
 
     @Override
@@ -38,7 +38,7 @@ public class UpdateFeatureFlagService extends BaseService<UpdateFeatureFlagReque
     }
 
     @Override
-    protected UpdateFeatureFlagResponse execute(UpdateFeatureFlagRequest request) {
+    protected FeatureFlagDTO execute(UpdateFeatureFlagRequest request) {
         FeatureFlag featureFlag = featureFlagRepository.findById(request.getFeatureFlagId())
                 .orElseThrow(ErrorCatalog.NO_DATA::getException);
         if (!featureFlag.getVersion().equals(request.getVersion())) {
@@ -53,11 +53,12 @@ public class UpdateFeatureFlagService extends BaseService<UpdateFeatureFlagReque
         } catch (OptimisticLockException e) {
             throw ErrorCatalog.OPTIMISTIC_LOCK.getException();
         }
-        return new UpdateFeatureFlagResponse(
-                newFeatureFlag.getId(),
-                newFeatureFlag.getOrganizationNode().getId(),
-                newFeatureFlag.getName(),
-                newFeatureFlag.getValue(),
-                newFeatureFlag.getVersion());
+        return FeatureFlagDTO.builder()
+                .id(newFeatureFlag.getId())
+                .nodeId(newFeatureFlag.getOrganizationNode().getId())
+                .name(newFeatureFlag.getName())
+                .value(newFeatureFlag.getValue())
+                .version(newFeatureFlag.getVersion())
+                .build();
     }
 }

@@ -29,7 +29,7 @@ public interface FeatureFlagRepository extends JpaRepository<FeatureFlag, Long> 
     List<FeatureFlag> findByOrganizationNodeId(Long nodeId, Integer limit, Integer offset);
 
     @Query(value = """
-            select ff.id, ff.name, ff.value, ff.organization_node_id, ff.version
+            select ff.*
             from organization_node on2
             join feature_flag ff on on2.id = ff.organization_node_id
             where on2.path @> (select o.path
@@ -40,7 +40,7 @@ public interface FeatureFlagRepository extends JpaRepository<FeatureFlag, Long> 
     List<FeatureFlag> findAllByAncestorsOrganizationNodes(Long nodeId, Integer limit, Integer offset);
 
     @Query(value = """
-            select ff.id, ff.name, ff.value, ff.organization_node_id, ff.version
+            select ff.*
             from organization_node on2
             join feature_flag ff on on2.id = ff.organization_node_id
             where on2.path <@ (select o.path
