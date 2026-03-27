@@ -18,14 +18,10 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Singleton
 @RequiredArgsConstructor
 public class SessionService {
-
-//    public static final String COOKIE_NAME = "SESSION";
-//    public static final int SECONDS_IN_HOUR = 3600;
 
     private final SessionRepository sessionRepository;
     private final UiClientRepository uiClientRepository;
@@ -69,12 +65,6 @@ public class SessionService {
     }
 
     public void invalidateSession(String sessionIdStr, String currentUserLogin) {
-//        long sessionId;
-//        try {
-//            sessionId = Long.parseLong(sessionIdStr);
-//        } catch (NumberFormatException e) {
-//            throw new BadCredentialsCustomException("Invalid session format");
-//        }
         long sessionId = SupportSessionUtils.parseSessionId(sessionIdStr);
 
         Session session = sessionRepository.findById(sessionId)
@@ -104,6 +94,7 @@ public class SessionService {
         SessionResponseDto body = SessionResponseDto.builder()
                 .login(user.getLogin())
                 .uuidDepartament(user.getUuidDepartament())
+                .roles(user.getRoles())
                 .build();
 
         return HttpResponse.ok(body)
