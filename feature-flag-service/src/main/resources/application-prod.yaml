@@ -1,0 +1,82 @@
+micronaut:
+  server:
+    cors:
+      configurations:
+        web:
+          allowedOrigins:
+            - "http://localhost:3000"
+            - "http://127.0.0.1:3000"
+            - "http://t-redflags.ru:3000"
+            - "http://72.56.33.250:3000"
+            - "https://t-redflags.ru"
+  http:
+    services:
+      auth-service:
+        url: http://localhost:8081
+        read-timeout: 2s
+        connect-timeout: 1s
+  security:
+    enabled: true
+    authentication: bearer
+    redirect:
+      enabled: false
+
+    token:
+      jwt:
+        enabled: true
+        cookie:
+          enabled: false
+        signatures:
+          secret:
+            generator:
+              secret: '${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForProduction}'
+        bearer:
+          enabled: true
+
+    endpoints:
+      login:
+        enabled: false
+      logout:
+        enabled: false
+
+    session:
+      enabled: false
+
+    intercept-url-map:
+      - pattern: /swagger-ui/**
+        access: isAnonymous()
+      - pattern: /swagger/**
+        access: isAnonymous()
+      - pattern: /api/v1/**
+        access: isAuthenticated()
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/ff-service
+    username: ${FF_SERVICE_DB_USER}
+    password: ${FF_SERVICE_DB_PASSWORD}
+jpa:
+  default:
+    properties:
+      hibernate:
+        show_sql: true
+
+kafka:
+  bootstrap:
+    servers: localhost:9094
+  security:
+    protocol: SASL_PLAINTEXT
+  sasl:
+    mechanism: SCRAM-SHA-512
+    jaas:
+      config: 'org.apache.kafka.common.security.scram.ScramLoginModule required username="${KAFKA_USERNAME:main_service}" password="${KAFKA_PASSWORD:main-secret}";'
+  producers:
+    default:
+      key:
+        serializer: org.apache.kafka.common.serialization.StringSerializer
+      value:
+        serializer: org.apache.kafka.common.serialization.StringSerializer
+endpoints:
+  health:
+    kafka:
+      enabled: false

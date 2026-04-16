@@ -1,0 +1,55 @@
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5433/authdatabase
+    username: ${AUTH_SERVICE_DB_USER}
+    password: ${AUTH_SERVICE_DB_PASSWORD}
+    driverClassName: org.postgresql.Driver
+    db-type: postgres
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        show_sql: true
+
+redis:
+  uri: redis://localhost:6379
+
+logger:
+  levels:
+    io.micronaut.security: DEBUG
+    io.micronaut.session: DEBUG
+
+micronaut:
+  server:
+    port: 8081
+    cors:
+      configurations:
+        web:
+          allowed-origins:
+            - "http://localhost:3000"
+            - "http://127.0.0.1:3000"
+            - "http://t-redflags.ru:3000"
+            - "http://72.56.33.250:3000"
+            - "https://t-redflags.ru"
+  http:
+    services:
+      ff-service:
+        url: "http://localhost:8080"
+
+
+redflag:
+  services:
+    auth-service:
+      url: "http://localhost:8081"
+
+kafka:
+  bootstrap:
+    servers: ${KAFKA_BOOTSTRAP_SERVERS:`localhost:9094`}
+  security:
+    protocol: SASL_PLAINTEXT
+  sasl:
+    mechanism: SCRAM-SHA-512
+    jaas:
+      config: "org.apache.kafka.common.security.scram.ScramLoginModule required username='${KAFKA_USERNAME:admin}' password='${KAFKA_PASSWORD:admin-secret}';"
+

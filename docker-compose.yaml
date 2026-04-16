@@ -73,12 +73,12 @@ services:
 
 
   auth-service:
-    image: lissaantipatrova/redflags-auth-service:1.0.1
+    image: lissaantipatrova/redflags-auth-service:1.0.2
     container_name: auth-service
     ports:
       - "8081"
     environment:
-      MICRONAUT_ENVIRONMENTS: dev
+      MICRONAUT_ENVIRONMENTS: prod
       DATASOURCES_DEFAULT_URL: jdbc:postgresql://postgres-auth:5432/${AUTH_SERVICE_DB}
       DATASOURCES_DEFAULT_USERNAME: ${AUTH_SERVICE_DB_USER}
       DATASOURCES_DEFAULT_PASSWORD: ${AUTH_SERVICE_DB_PASSWORD}
@@ -94,12 +94,12 @@ services:
       - kafka
 
   ff-service:
-    image: lissaantipatrova/redflags-feature-flag-service:1.0.1
+    image: lissaantipatrova/redflags-feature-flag-service:1.0.2
     container_name: ff-service
     ports:
       - "8080"
     environment:
-      MICRONAUT_ENVIRONMENTS: dev
+      MICRONAUT_ENVIRONMENTS: prod
       DATASOURCES_DEFAULT_URL: jdbc:postgresql://postgres-ff:5432/${FF_SERVICE_DB}
       DATASOURCES_DEFAULT_USERNAME: ${FF_SERVICE_DB_USER}
       DATASOURCES_DEFAULT_PASSWORD: ${FF_SERVICE_DB_PASSWORD}
