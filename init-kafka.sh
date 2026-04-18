@@ -8,7 +8,7 @@ node.id=1
 controller.quorum.voters=1@kafka:9093
 
 listeners=INTERNAL://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:9094
-advertised.listeners=INTERNAL://${KAFKA_INTERNAL_URL},EXTERNAL://72.56.33.250:9094
+advertised.listeners=INTERNAL://${KAFKA_INTERNAL_URL},EXTERNAL://t-redflags.ru:9094
 listener.security.protocol.map=INTERNAL:SASL_PLAINTEXT,CONTROLLER:SASL_PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
 inter.broker.listener.name=INTERNAL
 controller.listener.names=CONTROLLER

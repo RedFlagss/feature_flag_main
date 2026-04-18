@@ -66,14 +66,14 @@ services:
       - kafka
     environment:
       - KAFKA_CLUSTERS_0_NAME=RedFlag-Cluster
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=72.56.33.250:9094
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=t-redflags.ru:9094
       - KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL=SASL_PLAINTEXT
       - KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM=SCRAM-SHA-512
       - KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG=org.apache.kafka.common.security.scram.ScramLoginModule required username="${ADMIN_KAFKA_USERNAME}" password="${ADMIN_KAFKA_PASSWORD}";
 
 
   auth-service:
-    image: lissaantipatrova/redflags-auth-service:1.0.2
+    image: lissaantipatrova/redflags-auth-service:1.0.5
     container_name: auth-service
     ports:
       - "8081"
@@ -94,7 +94,7 @@ services:
       - kafka
 
   ff-service:
-    image: lissaantipatrova/redflags-feature-flag-service:1.0.2
+    image: lissaantipatrova/redflags-feature-flag-service:1.0.6
     container_name: ff-service
     ports:
       - "8080"
