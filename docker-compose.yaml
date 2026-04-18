@@ -76,7 +76,7 @@ services:
     image: lissaantipatrova/redflags-auth-service:1.0.5
     container_name: auth-service
     ports:
-      - "8081"
+      - "8081:8081"
     environment:
       MICRONAUT_ENVIRONMENTS: prod
       DATASOURCES_DEFAULT_URL: jdbc:postgresql://postgres-auth:5432/${AUTH_SERVICE_DB}
@@ -97,7 +97,7 @@ services:
     image: lissaantipatrova/redflags-feature-flag-service:1.0.6
     container_name: ff-service
     ports:
-      - "8080"
+      - "8080:8080"
     environment:
       MICRONAUT_ENVIRONMENTS: prod
       DATASOURCES_DEFAULT_URL: jdbc:postgresql://postgres-ff:5432/${FF_SERVICE_DB}
