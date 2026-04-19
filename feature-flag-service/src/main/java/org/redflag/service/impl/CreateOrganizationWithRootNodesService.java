@@ -40,10 +40,10 @@ public class CreateOrganizationWithRootNodesService extends BaseService<CreateOr
                 .setIsService(false);
         organizationNodeRepository.save(organizationNode);
         organizationNode.setPath(organizationNode.getId().toString());
-        organizationNodeRepository.update(organizationNode);
+        OrganizationNode newOrganizationNode = organizationNodeRepository.update(organizationNode);
 
 
-        return toCreateOrganizationWithRootNodeResponse(organization, organizationNode);
+        return toCreateOrganizationWithRootNodeResponse(organization, newOrganizationNode);
     }
 
     private CreateOrganizationWithRootNodeResponse toCreateOrganizationWithRootNodeResponse(
