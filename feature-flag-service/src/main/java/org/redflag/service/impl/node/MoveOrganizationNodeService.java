@@ -98,6 +98,7 @@ public class MoveOrganizationNodeService extends BaseService<MoveOrganizationNod
                 .uuid(rootNode.getUuid())
                 .oldPath(oldRootPath)
                 .newPath(rootNode.getPath())
+                .version(rootNode.getVersion())
                 .movedDescendants(subtree.stream()
                         .filter((node) -> !node.getId().equals(request.getNodeId()))
                         .map(organizationNodeDTOMapper::toOrganizationNodeDTO)
