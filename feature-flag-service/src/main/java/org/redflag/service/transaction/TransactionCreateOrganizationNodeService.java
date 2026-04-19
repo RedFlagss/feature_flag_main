@@ -42,6 +42,7 @@ public class TransactionCreateOrganizationNodeService {
             organizationNode.setPath(LtreePathUtil.getChildPath(parentNode.getPath(), organizationNode.getId()));
         }
         OrganizationNode newOrganizationNode = organizationNodeRepository.update(organizationNode);
+        organizationNodeRepository.flush();
 
         return organizationNodeWithCredentialsDTOMapper.toOrganizationNodeWithCredentialsDTO(newOrganizationNode);
     }

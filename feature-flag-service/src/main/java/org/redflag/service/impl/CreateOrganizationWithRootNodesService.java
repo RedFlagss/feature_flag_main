@@ -41,6 +41,7 @@ public class CreateOrganizationWithRootNodesService extends BaseService<CreateOr
         organizationNodeRepository.save(organizationNode);
         organizationNode.setPath(organizationNode.getId().toString());
         OrganizationNode newOrganizationNode = organizationNodeRepository.update(organizationNode);
+        organizationNodeRepository.flush();
 
 
         return toCreateOrganizationWithRootNodeResponse(organization, newOrganizationNode);

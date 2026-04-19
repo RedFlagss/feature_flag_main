@@ -94,7 +94,7 @@ services:
       - kafka
 
   ff-service:
-    image: lissaantipatrova/redflags-feature-flag-service:1.1.0
+    image: lissaantipatrova/redflags-feature-flag-service:1.1.1
     container_name: ff-service
     ports:
       - "8080:8080"
