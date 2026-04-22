@@ -95,5 +95,5 @@ endpoints:
   all:
     port: 8084
 
-logger:
-  config: logback-json.xml
+#logger:
+#  config: logback-json.xml

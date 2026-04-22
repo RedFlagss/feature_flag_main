@@ -3,7 +3,7 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
                 <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
-                    <prettyPrint>true</prettyPrint>
+                    <prettyPrint>false</prettyPrint>
                 </jsonFormatter>
 
                 <timestampFormat>HH:mm:ss.SSS</timestampFormat>
