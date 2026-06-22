@@ -18,6 +18,7 @@ Frontend хранится по [ссылке](https://github.com/RedFlagss/front
 Для микросервисов админ панели настроено хранение логов и сбор метрик: Grafana Alloy, Loki, Prometheus, Grafana
 
 SDK для клиентских приложений: Java 17, Kafka
+
 Frontend: TS, React, next.js, scss, casl, antd
 
 # Документация
